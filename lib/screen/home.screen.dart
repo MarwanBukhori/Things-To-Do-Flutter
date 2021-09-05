@@ -1,52 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_note/model/task.model.dart';
+import 'package:flutter_note/providers/task-list.provider.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-//everything dlm ni rebuild disebabkan setState(){}
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Awesome List App'),
-      ),
-      body: ListView(
-        children: List.generate(
-          taskList.length,
-              (i) {
-            return TaskContainer(
-                task: taskList[i],
-                index: i,
+    return ChangeNotifierProvider<TaskListProvider>(
+
+      create: (context)=> TaskListProvider(),
+      child: Builder(
+        builder: (context){
+            return  Scaffold(
+              appBar: AppBar(
+                title: Text('Awesome List App'),
+              ),
+              body: Consumer<TaskListProvider>(
+                builder: (context, taskListProvider, child) {
+
+                  final taskList = taskListProvider.taskList;
+                  return ListView(
+                    children: List.generate(
+                      taskList.length,
+                          (i) {
+                        return TaskContainer(
+                          task: taskList[i],
+                          index: i,
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+
+              floatingActionButton: FloatingActionButton(
+                onPressed: (){
+                  final taskListProvider =
+                      Provider.of<TaskListProvider>(context, listen: false);
+
+                  final taskList = taskListProvider.taskList;
+
+                  final newTask = Task(
+                    title: 'Task ${taskList.length + 1}',
+                    description: 'Task ${taskList.length + 1} Description',);
+
+                  //notify to rebuild only the consumer widget
+                  taskListProvider.addTask(newTask);
+                },
+                child: Icon(Icons.add),
+              ),
             );
-            },
-        ),
-      ),
-
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          print(taskList.length);
-          taskList.add(
-              Task(title: 'Task ${taskList.length + 1}', description: 'Task ${taskList.length + 1} Description',)
-          );
-          print(taskList.length);
-
-          //notify suruh build statefull balik
-         setState(() {
-
-         });
-          },
-        child: Icon(Icons.add),
+        },
       ),
     );
   }
 }
-
 
 //TASK CONTAINER SECTION
 class TaskContainer extends StatelessWidget {
@@ -101,10 +110,11 @@ class TaskContainer extends StatelessWidget {
               child: IconButton(
                 icon: Icon(Icons.delete),
                   onPressed: (){
-                  task.title = 'New Title';
-                  /*print(taskList.length);
-                  taskList.removeAt(index);
-*/
+
+                  final taskListProvider =
+                  Provider.of<TaskListProvider>(context, listen: false);
+                  taskListProvider.deleteTask(index);
+
                   },
               ),
             ),
