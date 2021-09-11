@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_note/screen/home.screen.dart';
+import 'package:flutter_note/screen/task-list.screen.dart';
 import 'package:flutter_note/screen/login.screen.dart';
 
 class TestScreen extends StatelessWidget {
@@ -16,11 +16,11 @@ class TestScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomeScreen(),
+                  builder: (context) => TaskListScreen(),
                 ),
               );
             },
-            child: Text('Home Screen'),
+            child: Text('Task List'),
           ),
           ElevatedButton(
             onPressed: () {
