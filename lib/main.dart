@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     final List<Task> list = taskList != null
         ? List.from((taskList as List<dynamic>).map((e) => Task.fromMap(e)))
         : [];
-    print(list);
+
     final taskListProvider = TaskListProvider(taskList: list);
     return MultiProvider(
         providers: [
