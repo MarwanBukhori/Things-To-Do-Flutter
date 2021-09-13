@@ -4,7 +4,7 @@ import 'package:flutter_note/providers/task-list.provider.dart';
 import 'package:flutter_note/screen/add-task.screen.dart';
 import 'package:provider/provider.dart';
 
-class TaskListScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
