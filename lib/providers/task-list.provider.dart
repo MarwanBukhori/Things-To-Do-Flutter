@@ -5,8 +5,9 @@ import 'package:get_storage/get_storage.dart';
 
 class TaskListProvider extends ChangeNotifier{
 
-  //deckare tasklist
+  //declare tasklist
   List<Task> taskList;
+
   TaskListProvider({required this.taskList});
 
   update(){
