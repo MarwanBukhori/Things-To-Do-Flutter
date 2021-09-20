@@ -13,6 +13,14 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Task List'),
         actions: [
+
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: (){
+              getUser();
+            },
+
+          ),
           IconButton(
             icon: Icon(Icons.power_settings_new),
             onPressed: (){
@@ -92,6 +100,14 @@ class TaskContainer extends StatelessWidget {
                   ),
                   Text(
                    task.description,
+                    style: TextStyle(fontSize: 20),
+                  ),
+
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    task.author,
                     style: TextStyle(fontSize: 20),
                   ),
                 ],

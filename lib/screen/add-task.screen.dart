@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_note/model/task.model.dart';
 import 'package:flutter_note/providers/task-list.provider.dart';
+import 'package:flutter_note/providers/user.provider.dart';
 import 'package:provider/provider.dart';
 
 class AddTaskScreen extends StatelessWidget {
@@ -36,7 +37,8 @@ class AddTaskScreen extends StatelessWidget {
               onPressed: () {
                 final task = Task(
                     description: descriptionTextController.text,
-                    title: titleTextController.text);
+                    title: titleTextController.text,
+                    author: AppUser().user!.email!);
                 Provider.of<TaskListProvider>(context, listen: false)
                     .addTask(task);
                 Navigator.pop(context);

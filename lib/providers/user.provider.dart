@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class AppUser extends ChangeNotifier{
 
-  bool loggedIn = false;
+  User? user;
 
   update(){
     notifyListeners();
@@ -14,7 +14,7 @@ class AppUser extends ChangeNotifier{
   AppUser.instance(){
     final user = FirebaseAuth.instance.currentUser;
     if(user != null)
-      loggedIn = true ;
+      this.user = user ;
 }
 
   factory AppUser() => AppUser.instance();
@@ -34,7 +34,7 @@ signIn(BuildContext context, {required String email, required String password}) 
         password: password
     );
     print('Sign in Sucessfully');
-    appUser.loggedIn = true;
+    appUser.user = userCredential.user;
     appUser.update();
 
   } on FirebaseAuthException catch (e) {
@@ -51,7 +51,12 @@ signOut(BuildContext context) async{
   await FirebaseAuth.instance.signOut();
   final appUser = Provider.of<AppUser>(context, listen:false);
 
-  appUser.loggedIn = false;
+  appUser.user = null;
   appUser.update();
+}
 
+getUser(){
+  final user = FirebaseAuth.instance.currentUser;
+  if(user != null)
+    print(user) ;
 }
