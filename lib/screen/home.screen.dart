@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_note/model/task.model.dart';
 import 'package:flutter_note/providers/task-list.provider.dart';
+import 'package:flutter_note/providers/user.provider.dart';
 import 'package:flutter_note/screen/add-task.screen.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,14 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Task List'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.power_settings_new),
+            onPressed: (){
+              signOut(context);
+            },
+          ),
+        ],
       ),
       body: Consumer<TaskListProvider>(
         builder: (context, taskListProvider, child) {

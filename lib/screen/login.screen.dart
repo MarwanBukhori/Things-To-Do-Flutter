@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_note/providers/user.provider.dart';
 
@@ -38,7 +39,17 @@ class LoginScreen extends StatelessWidget {
                 password: passwordController.text);
             },
             child: Text('Sign In'),
-          )
+          ),
+            ElevatedButton(
+              onPressed: (){
+                final user = FirebaseAuth.instance.currentUser;
+                if(user != null)
+                  print(user);
+                else
+                  print('No firebase user');
+              },
+              child: Text('Check if logged in'),
+            )
           ],
         ),
       )
