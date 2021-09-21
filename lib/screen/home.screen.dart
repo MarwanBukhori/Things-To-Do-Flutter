@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_note/model/task.model.dart';
 import 'package:flutter_note/providers/task-list.provider.dart';
@@ -15,16 +16,14 @@ class HomeScreen extends StatelessWidget {
         actions: [
 
           IconButton(
-            icon: Icon(Icons.person),
-            onPressed: (){
-              getUser();
-            },
-
-          ),
-          IconButton(
             icon: Icon(Icons.power_settings_new),
-            onPressed: (){
-              signOut(context);
+            onPressed: () async{
+
+              await AppUser().signOut();
+
+              // AppUser().signOut();
+              // FirebaseAuth.instance.signOut();
+              // boleh juga pakai
             },
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_note/model/task.model.dart';
 import 'package:flutter_note/providers/task-list.provider.dart';
@@ -35,6 +36,7 @@ class AddTaskScreen extends StatelessWidget {
             SizedBox(height: 15),
             ElevatedButton(
               onPressed: () {
+                print('user: ${FirebaseAuth.instance.currentUser}');
                 final task = Task(
                     description: descriptionTextController.text,
                     title: titleTextController.text,
