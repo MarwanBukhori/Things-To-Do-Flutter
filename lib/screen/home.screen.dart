@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.power_settings_new),
             onPressed: () async{
 
-              await AppUser().signOut();
+              await AppUser.instance.signOut();
 
               // AppUser().signOut();
               // FirebaseAuth.instance.signOut();

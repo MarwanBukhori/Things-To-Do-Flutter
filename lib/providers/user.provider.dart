@@ -9,7 +9,7 @@ class AppUser extends ChangeNotifier{
     notifyListeners();
   }
 
-  AppUser.instance(){
+  AppUser._(){
     FirebaseAuth.instance.authStateChanges().listen((user) {
       //sentiasa check bila user berubah
       // if(user != null)
@@ -27,7 +27,9 @@ class AppUser extends ChangeNotifier{
 
 User? get user => FirebaseAuth.instance.currentUser;
 
-factory AppUser() => AppUser.instance();
+factory AppUser() => AppUser._();
+
+static AppUser get instance => AppUser();
 
   signOut() async{
     await FirebaseAuth.instance.signOut();
@@ -48,11 +50,11 @@ factory AppUser() => AppUser.instance();
 
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        throw('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        throw('Wrong password provided for that user.');
       } else
-        print(e.toString());
+        throw(e.toString());
     }
   }
 
