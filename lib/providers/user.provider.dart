@@ -35,7 +35,7 @@ static AppUser get instance => AppUser();
     await FirebaseAuth.instance.signOut();
   }
 
-  signIn(
+  Future<void>signIn(
       { required String email,
         required String password}) async{
 
