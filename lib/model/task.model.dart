@@ -16,6 +16,7 @@ class Task{
     return {
       'title': title,
       'description': description,
+      'author': author,
     };
   }
 
