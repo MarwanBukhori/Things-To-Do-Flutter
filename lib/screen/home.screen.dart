@@ -4,12 +4,14 @@ import 'package:flutter_note/model/task.model.dart';
 import 'package:flutter_note/providers/task-list.provider.dart';
 import 'package:flutter_note/providers/user.provider.dart';
 import 'package:flutter_note/screen/add-task.screen.dart';
+import 'package:flutter_note/service/api.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-
+  final taskList = [];
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Task List'),
@@ -20,7 +22,6 @@ class HomeScreen extends StatelessWidget {
             onPressed: () async{
 
               await AppUser.instance.signOut();
-
               // AppUser().signOut();
               // FirebaseAuth.instance.signOut();
               // boleh juga pakai
@@ -28,23 +29,28 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<TaskListProvider>(
-        builder: (context, taskListProvider, child) {
-          final taskList = taskListProvider.taskList;
+      body: FutureBuilder<List<Task>>(
+        future: getTaskList(),
+        builder: (context, snapshot) {
 
-          return ListView(
-            children: List.generate(
-              taskList.length,
-                  (i) {
-                return TaskContainer(
-                  task: taskList[i],
-                  index: i,
-                );
-              },
-            ),
-          );
-        },
+          if(snapshot.hasData){
+            List<Task> taskList = snapshot.data!;
+            return ListView(
+              children: List.generate(
+                taskList.length,
+                    (i) {
+                  return TaskContainer(
+                    task: taskList[i],
+                    index: i,
+                  );
+                },
+              ),
+            );
+          } else return Container();
+
+        }
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // final taskListProvider =
