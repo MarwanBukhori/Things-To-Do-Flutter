@@ -16,20 +16,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
-    final taskList = box.read('taskList');
-    final List<Task> list = taskList != null
-        ? List.from((taskList as List<dynamic>).map((e) => Task.fromMap(e)))
-        : [];
 
-    final taskListProvider = TaskListProvider(taskList: list);
     final appUser = AppUser();
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<TaskListProvider>.value(value: taskListProvider),
         ChangeNotifierProvider<AppUser>.value(value: appUser)
       ],
       child: Builder(

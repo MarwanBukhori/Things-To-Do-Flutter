@@ -29,8 +29,8 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder<List<Task>>(
-        future: getTaskList(),
+      body: StreamBuilder<List<Task>>(
+        stream: getTaskListStream(),
         builder: (context, snapshot) {
 
           if(snapshot.hasData){
@@ -123,11 +123,9 @@ class TaskContainer extends StatelessWidget {
               child: IconButton(
                 icon: Icon(Icons.delete),
 
-                onPressed: (){
-                  final taskListProvider =
-                  Provider.of<TaskListProvider>(context, listen: false);
-                  taskListProvider.deleteTask(index);
-
+                onPressed: () async{
+                  print(task.id);
+                  if(task.id != null) await deleteTask(task.id!);
                   },
               ),
             ),
