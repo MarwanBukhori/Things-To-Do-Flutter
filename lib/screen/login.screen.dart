@@ -3,12 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_note/providers/user.provider.dart';
 import 'package:flutter_note/screen/sign-up.screen.dart';
 import 'package:flutter_note/widget/loading-indicator.widget.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
 
-  final emailController = new TextEditingController();
-  final passwordController = new TextEditingController();
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  final form = FormGroup({
+    'email' : FormControl<String>(validators: [Validators.required, Validators.email]),
+    'password' : FormControl<String>(validators: [Validators.required, Validators.minLength(1)]),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,54 +24,67 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Login Screen'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
+      body: ReactiveForm(
+        formGroup: form,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              ReactiveTextField(
+                formControlName: 'email',
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                ),
               ),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-              ),
-            ),
-          SizedBox(height: 19,),
-          ElevatedButton(
-            onPressed: () async {
-            try{
-              //execute(call) custom widget
-              LoadingIndicator.showLoadingDialog(context);
-              await AppUser.instance.signIn(
-                  email: emailController.text,
-                  password: passwordController.text);
 
-              //tutup model screen utk loading indicator
-              Navigator.pop(context);
-            } catch(e){
-              Navigator.pop(context);
-              showDialog(context: context,
-                builder: (context){
-                return AlertDialog(
-                  content: Text(e.toString()),
-                );
-              },
+              ReactiveTextField(
+                formControlName: 'password',
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                ),
+
+              ),
+            SizedBox(height: 19,),
+            ReactiveFormConsumer(
+              builder: (context, form, child) {
+                print(form.value);
+              return ElevatedButton(
+                onPressed: form.valid
+                    ? () async {
+                  try{
+                    //execute(call) custom widget
+                    LoadingIndicator.showLoadingDialog(context);
+                    await AppUser.instance.signIn(
+                        email: form.control('email').value,
+                        password: form.control('password').value);
+
+                    //tutup model screen utk loading indicator
+                    Navigator.pop(context);
+                  } catch(e){
+                    Navigator.pop(context);
+                    showDialog(context: context,
+                      builder: (context){
+                        return AlertDialog(
+                          content: Text(e.toString()),
+                        );
+                      },
+                    );
+                  }
+                } : null,
+                child: Text('Sign In'),
               );
-            }
-            },
-            child: Text('Sign In'),
+            },),
+
+
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                },
+                child: Text('Dont have an account? Sign Up'),
+              )
+            ],
           ),
-            ElevatedButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
-              },
-              child: Text('Dont have an account? Sign Up'),
-            )
-          ],
         ),
       )
     );
