@@ -6,7 +6,9 @@ import 'package:flutter_note/model/task.model.dart';
 //pakai care future
 //data xupdate
 Future<List<Task>> getTaskList() async{
-  final snapshot = await FirebaseFirestore.instance.collection('tasks').orderBy('title').get();
+  final snapshot = await FirebaseFirestore.instance
+      .collection('tasks')
+      .orderBy('title').get();
   return snapshot.docs.map((e) => Task.fromMap(e.data())).toList();
 }
 
@@ -14,9 +16,15 @@ Future<List<Task>> getTaskList() async{
 //data updated everytime new instance passed
 Stream<List<Task>> getTaskListStream() {
 
-    final snapshots = FirebaseFirestore.instance.collection('tasks').snapshots();
+    final snapshots = FirebaseFirestore.instance
+        .collection('tasks')
+        .orderBy('createdDate', descending: true)
+        .snapshots();
+
     return snapshots.map(
-            (snapshot) => snapshot.docs.map((e) => Task.fromMap(e.data(), id: e.id)).toList());
+            (snapshot) => snapshot.docs
+                .map(
+                    (e) => Task.fromMap(e.data(), id: e.id)).toList());
 
 
 }
