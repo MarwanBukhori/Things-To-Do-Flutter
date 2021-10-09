@@ -115,6 +115,19 @@ class TaskContainer extends StatelessWidget {
                     task.author,
                     style: TextStyle(fontSize: 20),
                   ),
+
+                  task.createdDate != null ?
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        task.createdDate.toString(),
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ) : Container (),
                 ],
               ),
             ),
