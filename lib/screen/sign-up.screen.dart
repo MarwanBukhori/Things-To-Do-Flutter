@@ -33,7 +33,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ReactiveTextField(
                 formControlName: 'email',
                 decoration: InputDecoration(
+                    border: OutlineInputBorder(),
                   labelText: 'Email',
+                  suffixIcon: Icon(Icons.email)
                 ),
                 validationMessages: (control){
                   return {
@@ -41,11 +43,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ValidationMessage.email : 'Email is not valid'
                   };
                 },
+                keyboardType: TextInputType.emailAddress,
               ),
               ReactiveTextField(
                 formControlName: 'password',
+                obscureText: true,
                 decoration: InputDecoration(
+                    border: OutlineInputBorder(),
                   labelText: 'Password',
+                    suffixIcon: Icon(Icons.lock)
                 ),
                 validationMessages: (control){
                   return {
@@ -56,7 +62,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ReactiveTextField(
                 formControlName: 'name',
                 decoration: InputDecoration(
+                  border: OutlineInputBorder(),
                   labelText: 'Name',
+                  helperText: 'Nama seperti dlm IC',
+                    suffixIcon: Icon(Icons.person)
                 ),
 
                 validationMessages: (control){
