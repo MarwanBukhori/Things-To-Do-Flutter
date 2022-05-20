@@ -4,26 +4,19 @@ import 'package:flutter_note/screen/home.screen.dart';
 import 'package:flutter_note/screen/login.screen.dart';
 import 'package:provider/provider.dart';
 
-
-
 class LandingPage extends StatelessWidget {
-
   const LandingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final appUser = Provider.of<AppUser>(context);
 
-    if(appUser.user != null) {
+    if (appUser.user != null) {
       print('Logged in');
       return HomeScreen();
-
     } else {
       print('Not logged in');
       return LoginScreen();
     }
   }
-
-  //condition for login / xlogin
-
 }

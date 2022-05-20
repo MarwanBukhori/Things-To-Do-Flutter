@@ -1,79 +1,59 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AppUser extends ChangeNotifier{
+class AppUser extends ChangeNotifier {
+  // User? user;
 
-
-  update(){
+  update() {
     notifyListeners();
   }
 
-  AppUser._(){
+  AppUser._() {
     FirebaseAuth.instance.authStateChanges().listen((user) {
-
       notifyListeners();
     });
+  }
 
+  User? get user => FirebaseAuth.instance.currentUser;
 
-}
+  factory AppUser() => AppUser._();
 
-User? get user => FirebaseAuth.instance.currentUser;
+  static AppUser get instance => AppUser();
 
-factory AppUser() => AppUser._();
-
-static AppUser get instance => AppUser();
-
-  signOut() async{
+  signOut() async {
     await FirebaseAuth.instance.signOut();
   }
 
-  Future<void>signIn(
-      { required String email,
-        required String password}) async{
-
+  Future<void> signIn({required String email, required String password}) async {
     print('Email: $email');
     print('Password: $password');
 
     try {
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password
-      );
-      print('Sign in Sucessfully');
-
+          .signInWithEmailAndPassword(email: email, password: password);
+      print('Sign in Succesful');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        throw('No user found for that email.');
+        throw ('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        throw('Wrong password provided for that user.');
+        throw ('Wrong password provided for that user.');
       } else
-        throw(e.toString());
+        throw (e.toString());
     }
   }
 
-
-Future<bool>SignUp({
-  required String email,
-  required String password,
-  required String name }) async{
-    try{
-      final credential = await FirebaseAuth.
-      instance.createUserWithEmailAndPassword(email: email, password: password);
-
-      //edit nama utk new-created user
+  Future<bool> signUp({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
       user!.updateDisplayName(name);
-
       return true;
-
-    }catch(e){
-      throw(e);
+    } catch (e) {
+      throw (e);
     }
-}
-
-}
-
-getUser(){
-  final user = FirebaseAuth.instance.currentUser;
-  if(user != null)
-    print(user);
+  }
 }
