@@ -58,6 +58,6 @@ A flutter to-do-list app developed using Firebase, project used to elevate flutt
  Developed by : 
  <table>
    <tr>
-     <td><img src="https://github.com/marwanbukhori/Things-To-Do-Flutter/blob/master/assets/img/logo.png" width=270 height=480></td>
+     <td><img src="https://github.com/marwanbukhori/Things-To-Do-Flutter/blob/master/assets/img/logo.png" width=360 height=240></td>
   </tr>
 <table>
