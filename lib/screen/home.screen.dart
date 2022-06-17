@@ -45,8 +45,10 @@ class HomeScreen extends StatelessWidget {
             if (snapshot.hasData) {
               List<Task> taskList = snapshot.data!;
               // taskList.sort((a,b)=>a.title.compareTo(b.title));
-              if (taskList.length <= 0){
-                return Center(child: Text("Please click button below to add task"),);
+              if (taskList.length <= 0) {
+                return Center(
+                  child: Text("Please click button below to add task"),
+                );
               }
               return ListView(
                 children: List.generate(
