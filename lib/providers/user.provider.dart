@@ -56,4 +56,5 @@ class AppUser extends ChangeNotifier {
       throw (e);
     }
   }
+
 }

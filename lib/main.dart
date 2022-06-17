@@ -93,9 +93,9 @@ class MyApp extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'ThingTodo',
             theme: ThemeData(
-              primarySwatch: Colors.green,
+              primarySwatch: Colors.pink,
             ),
             home: LandingPage(),
           );

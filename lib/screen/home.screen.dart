@@ -13,7 +13,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Task List ${AppUser().user!.displayName!}'),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: Center(
+              child: Image.asset(
+            'assets/img/thingtodo4.png',
+          )),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.person),
@@ -39,10 +45,13 @@ class HomeScreen extends StatelessWidget {
             if (snapshot.hasData) {
               List<Task> taskList = snapshot.data!;
               // taskList.sort((a,b)=>a.title.compareTo(b.title));
+              if (taskList.length <= 0){
+                return Center(child: Text("Please click button below to add task"),);
+              }
               return ListView(
                 children: List.generate(
                   taskList.length,
-                      (i) {
+                  (i) {
                     return TaskContainer(
                       task: taskList[i],
                       index: i,
@@ -83,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                               },
                               child: Text('No'),
                               style:
-                              ElevatedButton.styleFrom(primary: Colors.red),
+                                  ElevatedButton.styleFrom(primary: Colors.red),
                             )
                           ],
                         )
@@ -113,13 +122,21 @@ class HomeScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
+              Image.asset('assets/img/thingtodo_nobg.png'),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
                 title: Text('Profile'),
                 leading: Icon(Icons.person),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  AppUser.instance.signOut();
+                },
                 title: Text('Log Out'),
                 leading: Icon(Icons.power_settings_new),
               ),
@@ -261,8 +278,8 @@ class _TaskContainerState extends State<TaskContainer> {
           child: Container(
             decoration: BoxDecoration(
               color: widget.task.completed
-                  ? Colors.green.shade50
-                  : Colors.orange.shade200,
+                  ? Colors.green.shade100
+                  : Colors.red.shade50,
               border: Border.all(color: Colors.grey.shade300),
             ),
             padding: const EdgeInsets.all(8.0),
@@ -292,14 +309,17 @@ class _TaskContainerState extends State<TaskContainer> {
                         height: 5,
                       ),
                       Text(
-                        widget.task.author,
+                        "Author : " + widget.task.author,
                         style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 5,
                       ),
                       widget.task.dueDate != null
                           ? Text(
-                        widget.task.dueDateInString,
-                        style: TextStyle(fontSize: 20),
-                      )
+                              widget.task.dueDateInString,
+                              style: TextStyle(fontSize: 20),
+                            )
                           : Container()
                     ],
                   ),

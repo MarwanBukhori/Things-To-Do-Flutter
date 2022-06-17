@@ -22,66 +22,77 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Screen'),
-      ),
-      body: ReactiveForm(
-        formGroup: form,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              ReactiveTextField(
-                formControlName: 'email',
-                decoration: InputDecoration(
-                  labelText: 'Email',
+        resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 100.0),
+              child: Center(child: Image.asset('assets/img/thingtodo_nobg.png')),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 12, right: 12),
+              child: ReactiveForm(
+                formGroup: form,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      ReactiveTextField(
+                        formControlName: 'email',
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                        ),
+                      ),
+                      ReactiveTextField(
+                        formControlName: 'password',
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      ReactiveFormConsumer(
+                        builder: (context, form, child) {
+                          print(form.value);
+                          return ElevatedButton(
+                            onPressed: form.valid
+                                ? () async {
+                              try {
+                                LoadingIndicator.showLoadingDialog(context);
+                                await AppUser.instance.signIn(
+                                    email: form.control('email').value,
+                                    password: form.control('password').value);
+                                Navigator.pop(context);
+                              } catch (e) {
+                                Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: Text(e.toString()),
+                                    );
+                                  },
+                                );
+                              }
+                            }
+                                : null,
+                            child: Text('Sign In '),
+                          );
+                        },
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SignUpScreen()));
+                        },
+                        child: Text("Don't an account? Sign Up "),
+                      )
+                    ],
+                  ),
                 ),
               ),
-              ReactiveTextField(
-                formControlName: 'password',
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                ),
-              ),
-              SizedBox(height: 10),
-              ReactiveFormConsumer(
-                builder: (context, form, child) {
-                  print(form.value);
-                  return ElevatedButton(
-                    onPressed: form.valid
-                        ? () async {
-                      try {
-                        LoadingIndicator.showLoadingDialog(context);
-                        await AppUser.instance.signIn(
-                            email: form.control('email').value,
-                            password: form.control('password').value);
-                        Navigator.pop(context);
-                      } catch (e) {
-                        Navigator.pop(context);
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: Text(e.toString()),
-                            );
-                          },
-                        );
-                      }
-                    }
-                        : null,
-                    child: Text('Sign In '),
-                  );
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()));
-                },
-                child: Text("Don't an account? Sign Up "),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
